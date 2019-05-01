@@ -1,1 +1,1 @@
-import trigger
+from .trigger import *
