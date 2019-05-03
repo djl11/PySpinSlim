@@ -45,6 +45,38 @@ class PySpinSlim():
     def set_mono(self, cam_idx=0):
         self._set_pixel_format('Mono8',cam_idx)
 
+    # Buffer Handling #
+    #-----------------#
+
+    def _set_buffer_handling(self, format, cam_idx=0):
+
+        # Retrieve Stream Parameters device nodemap
+        s_node_map = self._cams[cam_idx].GetTLStreamNodeMap()
+
+        handling_mode = PySpin.CEnumerationPtr(s_node_map.GetNode('StreamBufferHandlingMode'))
+        if not PySpin.IsAvailable(handling_mode) or not PySpin.IsWritable(handling_mode):
+            raise Exception('Unable to set Buffer Handling mode (node retrieval). Aborting...\n')
+
+        handling_mode_entry = handling_mode.GetEntryByName(format)
+        handling_mode.SetIntValue(handling_mode_entry.GetValue())
+
+
+    def set_newest_first(self, cam_idx=0):
+        self._set_buffer_handling('NewestFirst', cam_idx)
+
+
+    def set_newest_only(self, cam_idx=0):
+        self._set_buffer_handling('NewestOnly', cam_idx)
+
+
+    def set_oldest_first(self, cam_idx=0):
+        self._set_buffer_handling('OldestFirst', cam_idx)
+
+
+    def set_oldest_first_overwrite(self, cam_idx=0):
+        self._set_buffer_handling('OldestFirstOverwrite', cam_idx)
+
+
 
     # Image Acquisition #
     #-------------------#
