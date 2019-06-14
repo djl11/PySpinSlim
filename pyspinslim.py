@@ -89,9 +89,10 @@ class PySpinSlim():
 
     def get_next_image(self, cam_idx=0):
         image_frame = self._cams[cam_idx].GetNextImage()
+        time_stamp = image_frame.GetTimeStamp()
         image = image_frame.GetData()
         image_frame.Release()
-        return image
+        return time_stamp, image
 
     def shutdown(self):
         """
