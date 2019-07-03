@@ -18,6 +18,7 @@ class PySpinSlim():
         # Retrieve GenICam nodemaps
         self._nodemaps = [cam.GetNodeMap() for cam in self._cams]
 
+
     # Pixel Format #
     #--------------#
 
@@ -93,6 +94,11 @@ class PySpinSlim():
         image = image_frame.GetData()
         image_frame.Release()
         return image, time_stamp
+
+    def get_image_dims(self, cam_idx=0):
+        width = self._cams[cam_idx].Width.GetValue()
+        height = self._cams[cam_idx].Height.GetValue()
+        return (height, width)
 
     def shutdown(self):
         """
