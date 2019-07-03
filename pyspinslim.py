@@ -92,7 +92,7 @@ class PySpinSlim():
         time_stamp = image_frame.GetTimeStamp()
         image = image_frame.GetData()
         image_frame.Release()
-        return time_stamp, image
+        return image, time_stamp
 
     def shutdown(self):
         """
