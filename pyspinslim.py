@@ -78,6 +78,32 @@ class PySpinSlim():
         self._set_buffer_handling('OldestFirstOverwrite', cam_idx)
 
 
+    # Video Mode #
+    #------------#
+
+    def set_video_mode(self, mode, cam_idx=0):
+        node_videomode = PySpin.CEnumerationPtr(self._nodemaps[cam_idx].GetNode("VideoMode"))
+        node_videomode_selected_mode = node_videomode.GetEntryByName("Mode"+str(mode))
+        node_videomode.SetIntValue(node_videomode_selected_mode.GetValue())
+
+    def get_image_dims(self, cam_idx=0):
+        width = self._cams[cam_idx].Width.GetValue()
+        height = self._cams[cam_idx].Height.GetValue()
+        return (height, width)
+
+    def set_image_dims(self, dims, cam_idx=0):
+        self._cams[cam_idx].Width.SetValue(dims[1])
+        self._cams[cam_idx].Height.SetValue(dims[0])
+
+    def get_image_offset(self, cam_idx=0):
+        offset_x = self._cams[cam_idx].OffsetX
+        offset_y = self._cams[cam_idx].OffsetY
+        return (offset_x, offset_y)
+
+    def set_image_offset(self, image_offset, cam_idx=0):
+        self._cams[cam_idx].OffsetX.SetValue(image_offset[0])
+        self._cams[cam_idx].OffsetY.SetValue(image_offset[1])
+
 
     # Image Acquisition #
     #-------------------#
@@ -94,11 +120,6 @@ class PySpinSlim():
         image = image_frame.GetData()
         image_frame.Release()
         return image, time_stamp
-
-    def get_image_dims(self, cam_idx=0):
-        width = self._cams[cam_idx].Width.GetValue()
-        height = self._cams[cam_idx].Height.GetValue()
-        return (height, width)
 
     def shutdown(self):
         """
