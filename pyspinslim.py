@@ -9,6 +9,12 @@ class PySpinSlim():
 
         # Retrieve list of cameras from the system
         self._cams = self._system.GetCameras()
+
+        # raise error if no cameras detected
+        if len(self._cams) == 0:
+            raise Exception('No cameras detected')
+        
+        # initiliaze the cameras
         for cam in self._cams:
             cam.Init()
 
